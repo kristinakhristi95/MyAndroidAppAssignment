@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.myapplication3"
+    namespace = "com.example.myapplicationjetpack"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.myapplication3"
+        applicationId = "com.example.myapplicationjetpack"
         minSdk = 31
         targetSdk = 35
         versionCode = 1
@@ -40,8 +40,7 @@ android {
 }
 
 dependencies {
-
-     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))

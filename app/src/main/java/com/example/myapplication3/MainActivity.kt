@@ -1,5 +1,4 @@
-package com.example.myapplication3
-
+package com.example.myapplicationjetpack
 import kotlinx.coroutines.flow.first
 import android.content.Context
 import android.os.Bundle
@@ -16,7 +15,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
-import com.example.myapplication3.ui.theme.MyApplication3Theme
+
+// DataStore instance
+val Context.dataStore by preferencesDataStore(name = "user_data")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StudentApp() {
@@ -74,7 +74,22 @@ fun StudentApp() {
                 modifier = Modifier.fillMaxWidth()
             )
 
+            // Buttons
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                
+                Button(onClick = {
+                    // Store Data in DataStore
+                    scope.launch {
+                        saveUserData(context, id, username, courseName)
+                    }
+                }) {
+                    Text("Store")
+                }
 
+            }
 
             // About Section
             Divider()
@@ -84,5 +99,17 @@ fun StudentApp() {
             Text("Course Name: ${if (courseName.isNotEmpty()) courseName else "Not loaded"}")
         }
     }
+}
+
+suspend fun saveUserData(context: Context, id: String, username: String, courseName: String) {
+    val ID_KEY = stringPreferencesKey("id")
+    val USERNAME_KEY = stringPreferencesKey("username")
+    val COURSE_NAME_KEY = stringPreferencesKey("courseName")
+    context.dataStore.edit { preferences ->
+        preferences[ID_KEY] = id
+        preferences[USERNAME_KEY] = username
+        preferences[COURSE_NAME_KEY] = courseName
+    }
+
 }
 
