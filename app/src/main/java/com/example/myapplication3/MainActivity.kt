@@ -1,4 +1,5 @@
-package com.example.myapplicationjetpack
+package com.example.myapplication3
+
 import kotlinx.coroutines.flow.first
 import android.content.Context
 import android.os.Bundle
@@ -98,6 +99,17 @@ fun StudentApp() {
                 }) {
                     Text("Store")
                 }
+                Button(onClick = {
+                    // Reset Data in DataStore
+                    scope.launch {
+                        resetUserData(context)
+                        id = "123" // Default ID value
+                        username = ""
+                        courseName = ""
+                    }
+                }) {
+                    Text("Reset")
+                }
             }
 
             // About Section
@@ -135,4 +147,6 @@ suspend fun loadUserData(context: Context): Map<String, String> {
     }.first()
 }
 
-
+suspend fun resetUserData(context: Context) {
+    context.dataStore.edit { it.clear() }
+}
