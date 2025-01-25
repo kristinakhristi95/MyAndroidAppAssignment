@@ -79,7 +79,17 @@ fun StudentApp() {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                
+                Button(onClick = {
+                    // Load Data from DataStore
+                    scope.launch {
+                        val data = loadUserData(context)
+                        id = data["id"] ?: ""
+                        username = data["username"] ?: ""
+                        courseName = data["courseName"] ?: ""
+                    }
+                }) {
+                    Text("Load")
+                }
                 Button(onClick = {
                     // Store Data in DataStore
                     scope.launch {
@@ -88,7 +98,6 @@ fun StudentApp() {
                 }) {
                     Text("Store")
                 }
-
             }
 
             // About Section
@@ -112,4 +121,18 @@ suspend fun saveUserData(context: Context, id: String, username: String, courseN
     }
 
 }
+
+suspend fun loadUserData(context: Context): Map<String, String> {
+    val ID_KEY = stringPreferencesKey("id")
+    val USERNAME_KEY = stringPreferencesKey("username")
+    val COURSE_NAME_KEY = stringPreferencesKey("courseName")
+    return context.dataStore.data.map { preferences ->
+        mapOf(
+            "id" to (preferences[ID_KEY] ?: ""),
+            "username" to (preferences[USERNAME_KEY] ?: ""),
+            "courseName" to (preferences[COURSE_NAME_KEY] ?: "")
+        )
+    }.first()
+}
+
 
