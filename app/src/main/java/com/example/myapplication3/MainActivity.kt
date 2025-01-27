@@ -1,7 +1,7 @@
 package com.example.myapplication3
 
 
-
+import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.flow.first
 import android.content.Context
 import android.os.Bundle
@@ -107,7 +107,11 @@ fun StudentApp() {
                         courseName = data["courseName"] ?: ""
                     }
                     dataLoaded = true // Mark data as loaded
-                }) {
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow, // Yellow background color
+                        contentColor = Color.Black // Black text for contrast
+                    )) {
                     Text("Load")
                 }
                 Button(onClick = {
@@ -126,7 +130,11 @@ fun StudentApp() {
                     } else {
                         errorMessage = validationError
                     }
-                }) {
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow, // Yellow background color
+                        contentColor = Color.Black // Black text for contrast
+                    )) {
                     Text("Store")
                 }
                 Button(onClick = {
@@ -140,7 +148,11 @@ fun StudentApp() {
                     }
                     dataLoaded = false // Reset data loaded flag
                     dataStored = false
-                }) {
+                },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Yellow, // Yellow background color
+                        contentColor = Color.Black // Black text for contrast
+                    )) {
                     Text("Reset")
                 }
             }
@@ -148,9 +160,10 @@ fun StudentApp() {
             // About Section
             Divider()
             Text("About", style = MaterialTheme.typography.titleMedium)
-
-            // Display data only when it's loaded
-            if (dataLoaded && dataStored) {
+            if (!dataLoaded && dataStored) {
+                Text("Data is stored.")
+            }
+            else if (dataLoaded && dataStored) {
                 Text("Student Name: ${if (username.isNotEmpty()) username else "Not loaded"}")
                 Text("Student ID: ${if (id.isNotEmpty()) id else "Not loaded"}")
                 Text("Course Name: ${if (courseName.isNotEmpty()) courseName else "Not loaded"}")
