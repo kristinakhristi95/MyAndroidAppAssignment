@@ -18,6 +18,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.background
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.layout.fillMaxSize
+
 
 // DataStore instance
 val Context.dataStore by preferencesDataStore(name = "user_data")
@@ -38,7 +42,7 @@ fun StudentApp() {
     val scope = rememberCoroutineScope()
     var isdataload = false;
     // State variables
-    var id by remember { mutableStateOf("") }
+    var id by remember { mutableStateOf("429") }
     var username by remember { mutableStateOf("") }
     var courseName by remember { mutableStateOf("") }
 
@@ -46,8 +50,8 @@ fun StudentApp() {
     var errorMessage by remember { mutableStateOf("") }
 
     // About Section Info
-    val studentName = "Your Name"
-    val studentID = "YourID"
+    val studentName = "Kristina Khristi"
+    val studentID = "301483429"
 
     // State to determine if data has been loaded
     var dataLoaded by remember { mutableStateOf(false) }
@@ -55,12 +59,19 @@ fun StudentApp() {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Student App") })
+            TopAppBar(title = { Text("Kristina Khristi App", color = Color.White) },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = Color(0xFF013220) // This sets the background color of the top bar
+                )
+            )
+
         }
     ) { paddingValues ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color(0xFFE6F3E6))
                 .padding(16.dp)
                 .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -109,8 +120,8 @@ fun StudentApp() {
                     dataLoaded = true // Mark data as loaded
                 },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Yellow, // Yellow background color
-                        contentColor = Color.Black // Black text for contrast
+                        containerColor = Color(0xFF013220), // Yellow background color
+                        contentColor = Color.White // Black text for contrast
                     )) {
                     Text("Load")
                 }
@@ -132,8 +143,8 @@ fun StudentApp() {
                     }
                 },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Yellow, // Yellow background color
-                        contentColor = Color.Black // Black text for contrast
+                        containerColor = Color(0xFF013220), // Yellow background color
+                        contentColor = Color.White // Black text for contrast
                     )) {
                     Text("Store")
                 }
@@ -150,18 +161,25 @@ fun StudentApp() {
                     dataStored = false
                 },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Yellow, // Yellow background color
-                        contentColor = Color.Black // Black text for contrast
+                        containerColor = Color(0xFF013220), // Yellow background color
+                        contentColor = Color.White // Black text for contrast
                     )) {
                     Text("Reset")
                 }
             }
 
             // About Section
-            Divider()
-            Text("About", style = MaterialTheme.typography.titleMedium)
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            Text("About", style = MaterialTheme.typography.titleLarge)
+            Text("Student Name: $studentName", fontWeight = FontWeight.Bold)
+            Text("Student ID: $studentID", fontWeight = FontWeight.Bold)
+
+            // Data Display Section
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            Text("Data Management", style = MaterialTheme.typography.titleLarge)
+
             if (!dataLoaded && dataStored) {
-                Text("Data is stored.")
+                Text("Your Data has been stored.", color = Color.Magenta)
             }
             else if (dataLoaded && dataStored) {
                 Text("Student Name: ${if (username.isNotEmpty()) username else "Not loaded"}")
